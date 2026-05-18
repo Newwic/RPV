@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - RPV Industrial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a class="logo" href="index.html">RPV Industrial</a>
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav-links">
+        <a href="index.html">HOME</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="section-title">
+      <h2>เข้าสู่ระบบผู้ดูแล</h2>
+      <p>เข้าใช้งานระบบ Admin เพื่อเพิ่มสินค้าและจัดการข้อมูลเว็บไซต์.</p>
+    </div>
+
+    <div class="login-panel">
+      <div class="card-body">
+        <h2>Login</h2>
+        <div class="form-panel">
+          <label for="username">Username</label>
+          <input id="username" class="input-field" type="text" placeholder="Username">
+          <label for="password">Password</label>
+          <input id="password" class="input-field" type="password" placeholder="Password">
+          <button onclick="login()">Login</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© 2026 RPV Industrial Supply</p>
+      <a href="index.html">กลับหน้าหลัก</a>
+    </div>
+  </footer>
+
+  <script src="login.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - RPV Industrial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a class="logo" href="index.html">RPV Admin</a>
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="/logout">LOGOUT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="section-title">
+      <h2>แดชบอร์ดผู้ดูแล</h2>
+      <p>เพิ่มสินค้าและตรวจสอบสินค้าที่มีอยู่ในระบบผ่านการเข้าสู่ระบบด้วย session.</p>
+    </div>
+
+    <div class="admin-panel-layout">
+      <div class="admin-panel">
+        <div class="card-body">
+          <h2>เพิ่มสินค้าใหม่</h2>
+          <div class="form-panel">
+            <label for="name">ชื่อสินค้า</label>
+            <input id="name" class="input-field" type="text" placeholder="ชื่อสินค้า">
+            <label for="price">ราคา</label>
+            <input id="price" class="input-field" type="number" placeholder="ราคา (บาท)">
+            <label for="detail">รายละเอียดสินค้า</label>
+            <textarea id="detail" class="textarea-field" placeholder="รายละเอียดสินค้า"></textarea>
+            <label for="image">ชื่อไฟล์รูป</label>
+            <input id="image" class="input-field" type="text" placeholder="เช่น product1.jpg">
+            <button onclick="addProduct()">เพิ่มสินค้า</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="card-body">
+          <h2>สินค้าที่มีอยู่</h2>
+          <div id="admin-products" class="product-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1240px; margin:0 auto; padding-top:24px;">
+      <button id="logoutBtn" class="button secondary">ออกจากระบบ</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© 2026 RPV Industrial Supply</p>
+      <a href="/login">เปลี่ยนผู้ใช้</a>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
