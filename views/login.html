@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - RPV Industrial</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: grid; place-items: center; min-height: 100vh; background: var(--bg); }
+    .login-box { max-width: 420px; width: 100%; padding: 40px; }
+    .error { color: var(--danger); text-align: center; margin: 15px 0; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1 style="text-align:center; color:var(--accent);">🔑 Admin Login</h1>
+    <div id="error" class="error"></div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" id="username" value="admin" required>
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" value="123456" required>
+      </div>
+      <button type="submit">เข้าสู่ระบบ</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = '';
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          window.location.href = '/admin.html';
+        } else {
+          errorDiv.textContent = data.message;
+        }
+      } catch (err) {
+        errorDiv.textContent = 'ไม่สามารถเชื่อมต่อ Server ได้';
+      }
+    });
+  </script>
+</body>
+</html>

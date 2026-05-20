@@ -1,0 +1,32 @@
+{
+  "name": "rpv",
+  "version": "1.0.0",
+  "description": "\"# RPV\"",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Newwic/RPV.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Newwic/RPV/issues"
+  },
+  "homepage": "https://github.com/Newwic/RPV#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.3",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1"
+  }
+}

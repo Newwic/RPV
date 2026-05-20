@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - RPV Industrial</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-container { max-width: 1300px; margin: 30px auto; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 14px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background: rgba(174, 255, 219, 0.1); }
+    .btn { padding: 8px 16px; margin: 0 4px; border: none; border-radius: 8px; cursor: pointer; }
+    .btn-edit { background: #1e8c5a; color: white; }
+    .btn-delete { background: #ff6b6b; color: white; }
+    img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <h1>🛠️ Admin Panel - RPV Industrial</h1>
+    <a href="/" style="color:var(--accent); margin-bottom:20px; display:inline-block;">← กลับหน้าหลัก</a>
+
+    <h2>เพิ่ม/แก้ไข สินค้า</h2>
+    <form id="productForm" enctype="multipart/form-data">
+      <input type="hidden" id="editId">
+      <input type="text" id="name" placeholder="ชื่อสินค้า" required>
+      <input type="number" id="price" placeholder="ราคา" step="0.01" required>
+      <select id="category">
+        <option value="">หมวดหมู่</option>
+        <option value="เครื่องพ่นทราย">เครื่องพ่นทราย</option>
+        <option value="วัสดุขัดผิว">วัสดุขัดผิว</option>
+        <option value="อุปกรณ์">อุปกรณ์</option>
+      </select>
+      <textarea id="description" placeholder="รายละเอียดสินค้า"></textarea>
+      <input type="file" id="image" accept="image/*">
+      <button type="submit">บันทึกสินค้า</button>
+    </form>
+
+    <h2>รายการสินค้าทั้งหมด</h2>
+    <table id="productTable">
+      <thead>
+        <tr><th>รูป</th><th>ชื่อ</th><th>ราคา</th><th>หมวดหมู่</th><th>จัดการ</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

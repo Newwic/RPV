@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - RPV Industrial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a class="logo" href="index.html">RPV Industrial</a>
+      <nav class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="about.html">ABOUT</a>
+        <a href="product.html">PRODUCTS</a>
+        <a href="gallery.html">SERVICE</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="login.html">ADMIN</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Contact Us</h2>
+      <p>ติดต่อทีมงาน RPV Industrial สำหรับคำปรึกษาและสั่งซื้อเครื่องจักรงานขัดผิวโลหะ.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h2>ข้อมูลการติดต่อ</h2>
+        <p>เราพร้อมให้บริการทั้งการเลือกเครื่องมือ การส่งมอบ พร้อมติดตั้ง และบริการหลังการขายทั่วไทย.</p>
+        <div class="contact-info">
+          <span><strong>โทร:</strong> 02-xxx-xxxx</span>
+          <span><strong>อีเมล:</strong> support@rpvindustrial.com</span>
+          <span><strong>ที่อยู่:</strong> 123 ถนนอุตสาหกรรม เขตบางเขน กรุงเทพฯ</span>
+        </div>
+      </div>
+
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('ขอบคุณที่ติดต่อเรา ทางเราจะติดต่อกลับเร็ว ๆ นี้');">
+        <div class="input-group">
+          <label for="name">ชื่อ</label>
+          <input id="name" type="text" placeholder="ชื่อของคุณ" required>
+        </div>
+        <div class="input-group">
+          <label for="email">อีเมล</label>
+          <input id="email" type="email" placeholder="example@mail.com" required>
+        </div>
+        <div class="input-group">
+          <label for="message">ข้อความ</label>
+          <textarea id="message" placeholder="ข้อความถึงเรา" required></textarea>
+        </div>
+        <button type="submit">ส่งข้อความ</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© 2026 RPV Industrial Supply</p>
+      <a href="index.html">กลับหน้าหลัก</a>
+    </div>
+  </footer>
+</body>
+</html>
