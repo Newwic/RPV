@@ -423,7 +423,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>ปรับกล้องให้ถอยออกอีก • เห็นเครื่องเต็มเฟรมชัดขึ้น</small>
+  <small>ปรับกล้องอัตโนมัติให้เห็นเครื่องครบทั้งตัวและมีพื้นที่รอบเครื่อง</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -624,6 +624,8 @@ const PART_DEFS = [
 let model = null;
 let modelSize = 1;
 let initialDistance = 6;
+let normalCameraY = 0;
+let normalTargetY = 0;
 const explodedViewCenter = new THREE.Vector3();
 let explodedViewDistance = 6;
 
@@ -906,20 +908,38 @@ function centerAndFit(){
   const size = box.getSize(new THREE.Vector3());
   modelSize = Math.max(size.x,size.y,size.z);
 
-  initialDistance =
-    modelSize /
-    (2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))) * .90;
+  // คำนวณระยะกล้องจากความสูงและความกว้างจริงของโมเดล
+  // เพื่อให้เห็นเครื่องครบทั้งตัว แม้มีเกจด้านบนเพิ่มเข้ามา
+  const normalFov = 31;
+  const normalVerticalFov = THREE.MathUtils.degToRad(normalFov);
+  const normalHorizontalFov =
+    2*Math.atan(Math.tan(normalVerticalFov/2)*camera.aspect);
 
-  // มุมกล้องเริ่มต้นให้มองเห็นสินค้าวางบนพื้นชัด ๆ
-  camera.position.set(0,size.y*.24,initialDistance);
+  const normalDistanceForHeight =
+    size.y/Math.max(2*Math.tan(normalVerticalFov/2)*.66,.0001);
+
+  const normalDistanceForWidth =
+    size.x/Math.max(2*Math.tan(normalHorizontalFov/2)*.76,.0001);
+
+  initialDistance = Math.max(
+    normalDistanceForHeight,
+    normalDistanceForWidth,
+    size.z*2.1
+  ) * 1.10;
+
+  normalTargetY = size.y*.47;
+  normalCameraY = size.y*.51;
+
+  // มุมกล้องเริ่มต้น เห็นเครื่องครบทั้งบนและล่าง
+  camera.position.set(0,normalCameraY,initialDistance);
   camera.near = Math.max(modelSize/2500,.0001);
   camera.far = modelSize*150;
-  camera.fov = 31;
+  camera.fov = normalFov;
   camera.updateProjectionMatrix();
 
-  controls.target.set(0,size.y*.22,0);
+  controls.target.set(0,normalTargetY,0);
   controls.minDistance = initialDistance*.08;
-  controls.maxDistance = initialDistance*1.3;
+  controls.maxDistance = initialDistance*1.8;
   controls.update();
 
   floor.scale.setScalar(modelSize*.6);
@@ -1183,8 +1203,8 @@ function clearCurrentSelection(restoreCamera=true){
       );
     }else{
       animateCameraTo(
-        new THREE.Vector3(0,modelSize*.24,initialDistance),
-        new THREE.Vector3(0,modelSize*.22,0),
+        new THREE.Vector3(0,normalCameraY,initialDistance),
+        new THREE.Vector3(0,normalTargetY,0),
         31
       );
     }
@@ -1228,7 +1248,7 @@ renderer.domElement.addEventListener("pointerup",event=>{
 
 const loader = new GLTFLoader();
 
-const modelUrl = new URL("./filter.glb?v=8", import.meta.url).href;
+const modelUrl = new URL("./filter.glb?v=10", import.meta.url).href;
 
 loader.load(
   modelUrl,
@@ -1406,7 +1426,7 @@ function focusBottomAfterLift(){
   animateCameraTo(position,target,targetFov);
 }
 
-function setView(position,target=new THREE.Vector3(0,modelSize*.22,0),fov=31){
+function setView(position,target=new THREE.Vector3(0,normalTargetY,0),fov=31){
   autoRotate = false;
   const autoBtn = document.getElementById("autoBtn");
   if(autoBtn) autoBtn.classList.remove("active");
@@ -1419,25 +1439,25 @@ function setView(position,target=new THREE.Vector3(0,modelSize*.22,0),fov=31){
 
 window.viewFront = ()=>setView(
   new THREE.Vector3(0,modelSize*.28,initialDistance),
-  new THREE.Vector3(0,modelSize*.22,0),
+  new THREE.Vector3(0,normalTargetY,0),
   31
 );
 
 window.viewSide = ()=>setView(
   new THREE.Vector3(initialDistance,modelSize*.19,0),
-  new THREE.Vector3(0,modelSize*.22,0),
+  new THREE.Vector3(0,normalTargetY,0),
   31
 );
 
 window.viewBack = ()=>setView(
   new THREE.Vector3(0,modelSize*.19,-initialDistance),
-  new THREE.Vector3(0,modelSize*.22,0),
+  new THREE.Vector3(0,normalTargetY,0),
   31
 );
 
 window.viewTop = ()=>setView(
   new THREE.Vector3(0,initialDistance,0),
-  new THREE.Vector3(0,modelSize*.22,0),
+  new THREE.Vector3(0,normalTargetY,0),
   31
 );
 
@@ -1501,8 +1521,8 @@ window.toggleExplode = ()=>{
     showStatus("กลับสู่ตำแหน่งประกอบ");
 
     animateCameraTo(
-      new THREE.Vector3(0,modelSize*.24,initialDistance),
-      new THREE.Vector3(0,modelSize*.22,0),
+      new THREE.Vector3(0,normalCameraY,initialDistance),
+      new THREE.Vector3(0,normalTargetY,0),
       34
     );
   }
@@ -1543,8 +1563,8 @@ window.resetAll = ()=>{
   root.rotation.set(0,0,0);
   clearCurrentSelection(false);
   animateCameraTo(
-    new THREE.Vector3(0,modelSize*.24,initialDistance),
-    new THREE.Vector3(0,modelSize*.22,0),
+    new THREE.Vector3(0,normalCameraY,initialDistance),
+    new THREE.Vector3(0,normalTargetY,0),
     31
   );
 };
