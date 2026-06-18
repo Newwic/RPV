@@ -423,7 +423,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>เลือกชิ้นงานแล้วดึงออกห่างชัดเจนก่อน จากนั้นค่อยซูมเข้าไปดูชิ้นงานนั้น</small>
+  <small>เลือกชิ้นงานแล้วดึงขึ้นด้านบนก่อน จากนั้นค่อยซูมเข้าไปดูชิ้นงานนั้น</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -1064,19 +1064,19 @@ function computeRightTarget(record){
 
   const currentWorld = record.group.getWorldPosition(new THREE.Vector3());
 
-  // ดึงออกไปทางขวาให้ห่างชัดเจน
-  const sideOffset = Math.max(
-    modelSize*.96,
-    partSize.x*7.0,
-    partSize.y*1.8
+  // เลือกชิ้นงานแล้วดึง "ขึ้นบน" ให้ห่างจากตัวเครื่องชัดเจน
+  const verticalOffset = Math.max(
+    modelSize*.82,
+    partSize.y*3.6,
+    partSize.x*2.2
   );
 
-  // ยกขึ้นนิดหน่อยให้ดูเด่นและไม่จมพื้น
-  const liftOffset = Math.max(partSize.y*.04, modelSize*.015);
+  // ขยับออกด้านข้างเล็กน้อยเพื่อไม่ให้ทับกับตัวเครื่อง
+  const sideOffset = Math.max(modelSize*.06, partSize.x*.35);
 
   const desiredWorld = currentWorld.clone()
-    .add(cameraRight.multiplyScalar(sideOffset))
-    .add(new THREE.Vector3(0,liftOffset,0));
+    .add(new THREE.Vector3(0,verticalOffset,0))
+    .add(cameraRight.multiplyScalar(sideOffset));
 
   record.selectedPosition.copy(
     record.group.parent.worldToLocal(desiredWorld.clone())
@@ -1109,7 +1109,7 @@ function beginExtraction(record){
     to:record.selectedPosition.clone()
   };
 
-  showStatus("กำลังแยกชิ้นงาน...");
+  showStatus("กำลังดึงชิ้นงานขึ้นด้านบน...");
 }
 
 function beginCameraFocus(record){
@@ -1262,7 +1262,7 @@ renderer.domElement.addEventListener("pointerup",event=>{
 
 const loader = new GLTFLoader();
 
-const modelUrl = new URL("./filter.glb?v=12", import.meta.url).href;
+const modelUrl = new URL("./filter.glb?v=13", import.meta.url).href;
 
 loader.load(
   modelUrl,
