@@ -423,7 +423,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>ปรับกล้องอัตโนมัติให้เห็นเครื่องครบทั้งตัวและมีพื้นที่รอบเครื่อง</small>
+  <small>เลือกชิ้นงานแล้วดึงออกห่างชัดเจนก่อน จากนั้นค่อยซูมเข้าไปดูชิ้นงานนั้น</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -1059,10 +1059,24 @@ function computeRightTarget(record){
     .crossVectors(cameraForward,camera.up)
     .normalize();
 
+  const box = new THREE.Box3().setFromObject(record.group);
+  const partSize = box.getSize(new THREE.Vector3());
+
   const currentWorld = record.group.getWorldPosition(new THREE.Vector3());
-  const desiredWorld = currentWorld.clone().add(
-    cameraRight.multiplyScalar(modelSize*.32)
+
+  // ดึงออกไปทางขวาให้ห่างชัดเจน
+  const sideOffset = Math.max(
+    modelSize*.96,
+    partSize.x*7.0,
+    partSize.y*1.8
   );
+
+  // ยกขึ้นนิดหน่อยให้ดูเด่นและไม่จมพื้น
+  const liftOffset = Math.max(partSize.y*.04, modelSize*.015);
+
+  const desiredWorld = currentWorld.clone()
+    .add(cameraRight.multiplyScalar(sideOffset))
+    .add(new THREE.Vector3(0,liftOffset,0));
 
   record.selectedPosition.copy(
     record.group.parent.worldToLocal(desiredWorld.clone())
@@ -1090,7 +1104,7 @@ function beginExtraction(record){
   extractionAnimation = {
     record,
     start:performance.now(),
-    duration:480,
+    duration:760,
     from:record.group.position.clone(),
     to:record.selectedPosition.clone()
   };
@@ -1105,10 +1119,10 @@ function beginCameraFocus(record){
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
 
-  const targetFov = 27;
+  const targetFov = 20;
   const verticalFov = THREE.MathUtils.degToRad(targetFov);
   const horizontalFov = 2*Math.atan(Math.tan(verticalFov/2)*camera.aspect);
-  const fillRatio = .62;
+  const fillRatio = .82;
 
   const distanceForHeight =
     size.y/Math.max(2*Math.tan(verticalFov/2)*fillRatio,.0001);
@@ -1121,7 +1135,7 @@ function beginCameraFocus(record){
     distanceForHeight,
     distanceForWidth,
     distanceForDepth,
-    modelSize*.13
+    modelSize*.18
   );
 
   const direction = camera.position.clone().sub(controls.target);
@@ -1248,7 +1262,7 @@ renderer.domElement.addEventListener("pointerup",event=>{
 
 const loader = new GLTFLoader();
 
-const modelUrl = new URL("./filter.glb?v=10", import.meta.url).href;
+const modelUrl = new URL("./filter.glb?v=12", import.meta.url).href;
 
 loader.load(
   modelUrl,
@@ -1390,7 +1404,7 @@ function focusBottomAfterLift(){
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
 
-  const targetFov = 27;
+  const targetFov = 20;
   const verticalFov = THREE.MathUtils.degToRad(targetFov);
   const horizontalFov =
     2*Math.atan(Math.tan(verticalFov/2)*camera.aspect);
