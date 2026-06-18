@@ -423,7 +423,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>มีมุม หน้า ข้าง หลัง บน ล่าง + Exploded View และแทบลูกศรด้านขวาสำหรับดูส่วนประกอบทั้งหมด</small>
+  <small>มี Exploded View, X-Ray และแทบลูกศรด้านขวาสำหรับดูส่วนประกอบทั้งหมด</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -439,12 +439,8 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 
 <div class="controls">
-  <button onclick="viewFront()">หน้า</button>
-  <button onclick="viewSide()">ข้าง</button>
-  <button onclick="viewBack()">หลัง</button>
-  <button onclick="viewTop()">บน</button>
-  <button onclick="viewBottom()">ล่าง</button>
   <button id="explodeBtn" onclick="toggleExplode()">Exploded View</button>
+  <button id="xrayBtn" onclick="toggleXRay()">X-Ray</button>
   <button onclick="resetAll()">รีเซ็ต</button>
 </div>
 
@@ -461,7 +457,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 </aside>
 
 <div class="hint">
-กดลูกศรด้านขวาเพื่อเปิดรายการชิ้นส่วนทั้งบนคอมและมือถือ</div>
+ใช้ Exploded View เพื่อแยกชิ้นส่วน หรือ X-Ray เพื่อดูโครงสร้างภายใน</div>
 
 <div id="loading" class="loading">
   <div class="spinner"></div>
@@ -630,6 +626,7 @@ let extractionAnimation = null;
 let cameraAnimation = null;
 let statusTimer = null;
 let partsDrawerOpen = false;
+let xrayMode = false;
 
 function easeInOutCubic(t){
   return t < .5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
@@ -722,7 +719,45 @@ function restoreMaterials(){
       ? saved.map(mat=>mat.clone())
       : saved[0].clone();
   });
+
+  if(xrayMode){
+    applyXRayState();
+  }
 }
+
+
+function applyXRayState(){
+  clickableMeshes.forEach(mesh=>{
+    if(!mesh.material) return;
+
+    const materials = Array.isArray(mesh.material)
+      ? mesh.material
+      : [mesh.material];
+
+    materials.forEach(mat=>{
+      mat.transparent = xrayMode;
+      mat.opacity = xrayMode ? 0.28 : 1;
+      mat.depthWrite = !xrayMode;
+      mat.side = xrayMode ? THREE.DoubleSide : THREE.FrontSide;
+      mat.needsUpdate = true;
+    });
+  });
+}
+
+window.toggleXRay = ()=>{
+  xrayMode = !xrayMode;
+
+  const btn = document.getElementById("xrayBtn");
+  if(btn) btn.classList.toggle("active",xrayMode);
+
+  restoreMaterials();
+
+  if(selectedRecord){
+    highlightRecord(selectedRecord);
+  }
+
+  showStatus(xrayMode ? "เปิดโหมด X-Ray" : "ปิดโหมด X-Ray");
+};
 
 function highlightRecord(record){
   restoreMaterials();
@@ -1440,6 +1475,11 @@ window.clearSelection = ()=>{
 };
 
 window.resetAll = ()=>{
+  xrayMode = false;
+  const xrayBtn = document.getElementById("xrayBtn");
+  if(xrayBtn) xrayBtn.classList.remove("active");
+  restoreMaterials();
+
   modelLiftAnimation = null;
   modelLiftTargetY = groundedModelY;
   if(model) model.position.y = groundedModelY;
