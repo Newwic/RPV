@@ -423,7 +423,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>เพิ่มไส้กรองภายในแล้ว • ใช้ Exploded View, X-Ray และแทบลูกศรด้านขวาดูส่วนประกอบทั้งหมด</small>
+  <small>ตัวถังด้านนอกทึบในโหมดปกติ • เปิด X-Ray เมื่อต้องการดูไส้กรองภายใน</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -794,6 +794,22 @@ function createLogicalGroups(){
   const meshes = [];
   model.traverse(child=>{
     if(child.isMesh && child.name!=="Ground"){
+      // Body_Main ในไฟล์ GLB ถูกตั้งเป็นวัสดุโปร่งใส (alpha 0.2)
+      // บังคับให้ตัวถังด้านนอกทึบในโหมดปกติ และโปร่งใสเฉพาะตอนเปิด X-Ray
+      if(child.name==="Body_Main" && child.material){
+        const materials = Array.isArray(child.material)
+          ? child.material
+          : [child.material];
+
+        materials.forEach(mat=>{
+          mat.transparent = false;
+          mat.opacity = 1;
+          mat.depthWrite = true;
+          mat.side = THREE.FrontSide;
+          mat.needsUpdate = true;
+        });
+      }
+
       meshes.push(child);
       clickableMeshes.push(child);
       cloneMaterials(child);
@@ -1198,7 +1214,7 @@ renderer.domElement.addEventListener("pointerup",event=>{
 
 const loader = new GLTFLoader();
 
-const modelUrl = new URL("./filter.glb?v=3", import.meta.url).href;
+const modelUrl = new URL("./filter.glb?v=4", import.meta.url).href;
 
 loader.load(
   modelUrl,
