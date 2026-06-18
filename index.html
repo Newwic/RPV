@@ -423,7 +423,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>มี Exploded View, X-Ray และแทบลูกศรด้านขวาสำหรับดูส่วนประกอบทั้งหมด</small>
+  <small>เพิ่มไส้กรองภายในแล้ว • ใช้ Exploded View, X-Ray และแทบลูกศรด้านขวาดูส่วนประกอบทั้งหมด</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -457,7 +457,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 </aside>
 
 <div class="hint">
-ใช้ Exploded View เพื่อแยกชิ้นส่วน หรือ X-Ray เพื่อดูโครงสร้างภายใน</div>
+กด X-Ray เพื่อมองผ่านตัวถังและดูไส้กรองภายใน หรือใช้ Exploded View เพื่อแยกทุกชิ้น</div>
 
 <div id="loading" class="loading">
   <div class="spinner"></div>
@@ -566,25 +566,31 @@ const PART_DEFS = [
     match:n=>n.startsWith("Side_Port")
   },
   {
-    key:"drain",no:7,title:"Drain Port",
+    key:"filter",no:7,title:"Filter Cartridge / ไส้กรอง",
+    desc:"ชุดไส้กรองภายใน ประกอบด้วยตัวไส้กรอง จีบกรอง แหวนรัด ฝาบน ฝาล่าง และแกนกลาง",
+    material:"Pleated Filter Media / Steel Core",
+    match:n=>n.startsWith("Filter_")
+  },
+  {
+    key:"drain",no:8,title:"Drain Port",
     desc:"ชุดพอร์ตระบายด้านล่าง",
     material:"Carbon Steel",
     match:n=>["Bottom_Drain","Bottom_Red_Insert"].includes(n)
   },
   {
-    key:"leg1",no:8,title:"Support Leg 1",
+    key:"leg1",no:9,title:"Support Leg 1",
     desc:"ชุดขารองรับด้านที่ 1",
     material:"Carbon Steel",
     match:n=>n.endsWith("_1") && n.startsWith("Leg_")
   },
   {
-    key:"leg2",no:9,title:"Support Leg 2",
+    key:"leg2",no:10,title:"Support Leg 2",
     desc:"ชุดขารองรับด้านที่ 2",
     material:"Carbon Steel",
     match:n=>n.endsWith("_2") && n.startsWith("Leg_")
   },
   {
-    key:"leg3",no:10,title:"Support Leg 3",
+    key:"leg3",no:11,title:"Support Leg 3",
     desc:"ชุดขารองรับด้านที่ 3",
     material:"Carbon Steel",
     match:n=>n.endsWith("_3") && n.startsWith("Leg_")
@@ -734,11 +740,20 @@ function applyXRayState(){
       ? mesh.material
       : [mesh.material];
 
+    const isFilterPart = mesh.name.startsWith("Filter_");
+
     materials.forEach(mat=>{
-      mat.transparent = xrayMode;
-      mat.opacity = xrayMode ? 0.28 : 1;
-      mat.depthWrite = !xrayMode;
-      mat.side = xrayMode ? THREE.DoubleSide : THREE.FrontSide;
+      if(xrayMode && isFilterPart){
+        mat.transparent = false;
+        mat.opacity = 1;
+        mat.depthWrite = true;
+        mat.side = THREE.DoubleSide;
+      }else{
+        mat.transparent = xrayMode;
+        mat.opacity = xrayMode ? 0.20 : 1;
+        mat.depthWrite = !xrayMode;
+        mat.side = xrayMode ? THREE.DoubleSide : THREE.FrontSide;
+      }
       mat.needsUpdate = true;
     });
   });
@@ -883,7 +898,7 @@ function centerAndFit(){
 
   // จัด Exploded View เป็นแถวตรง ใกล้กัน และให้ทุกชิ้นวางบนพื้น
   const order = [
-    "top","lid","oring","body","side",
+    "top","lid","oring","body","filter","side",
     "drain","bolts","leg1","leg2","leg3"
   ];
 
@@ -1183,7 +1198,7 @@ renderer.domElement.addEventListener("pointerup",event=>{
 
 const loader = new GLTFLoader();
 
-const modelUrl = new URL("./filter.glb?v=2", import.meta.url).href;
+const modelUrl = new URL("./filter.glb?v=3", import.meta.url).href;
 
 loader.load(
   modelUrl,
