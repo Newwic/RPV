@@ -8,8 +8,8 @@
 <script type="importmap">
 {
   "imports":{
-    "three":"https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"
+    "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
   }
 }
 </script>
@@ -181,6 +181,110 @@ button.active{background:var(--green)}
   font-size:12px;
 }
 
+
+.parts-toggle{
+  position:fixed;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:34;
+  width:44px;
+  height:74px;
+  border-radius:14px 0 0 14px;
+  background:rgba(23,107,38,.96);
+  color:#fff;
+  box-shadow:0 14px 34px rgba(0,0,0,.22);
+  font-size:22px;
+  padding:0;
+}
+.parts-toggle:hover{background:#12561e;transform:translateY(-50%)}
+
+.parts-drawer{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:33;
+  width:min(360px,calc(100vw - 80px));
+  max-height:calc(100vh - 36px);
+  overflow:hidden;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:20px;
+  box-shadow:0 18px 55px rgba(0,0,0,.18);
+  backdrop-filter:blur(16px);
+  transform:translateX(calc(100% + 22px));
+  transition:.28s ease;
+  display:flex;
+  flex-direction:column;
+}
+.parts-drawer.open{
+  transform:translateX(0);
+}
+.parts-drawer-header{
+  padding:16px 16px 10px;
+  border-bottom:1px solid #e4e9ed;
+}
+.parts-drawer-header small{
+  display:block;
+  margin-top:3px;
+  color:#69727a;
+}
+.parts-list{
+  padding:12px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.parts-item{
+  width:100%;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  text-align:left;
+  background:#f4f7f8;
+  color:#111;
+  border:1px solid #dde5e9;
+  border-radius:14px;
+  padding:12px;
+}
+.parts-item:hover{
+  background:#edf6ef;
+  color:#111;
+}
+.parts-item.active{
+  background:#e8f5eb;
+  border-color:#176b26;
+  box-shadow:0 0 0 2px rgba(23,107,38,.08) inset;
+}
+.parts-item-no{
+  flex:0 0 30px;
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#176b26;
+  color:#fff;
+  font-weight:800;
+  font-size:13px;
+}
+.parts-item-text{
+  display:block;
+  min-width:0;
+}
+.parts-item-text b{
+  display:block;
+  color:#176b26;
+  font-size:14px;
+}
+.parts-item-text small{
+  display:block;
+  margin-top:3px;
+  color:#5f6c74;
+  line-height:1.4;
+}
+
 .loading{
   position:fixed;
   inset:0;
@@ -251,9 +355,31 @@ button.active{background:var(--green)}
     font-size:12px;
   }
 
+  .parts-toggle{
+    right:0;
+    top:44%;
+    width:42px;
+    height:64px;
+    border-radius:14px 0 0 14px;
+    font-size:20px;
+  }
+
+  .parts-drawer{
+    top:8px;
+    right:8px;
+    width:min(88vw,340px);
+    max-height:calc(100vh - 92px - env(safe-area-inset-bottom));
+    border-radius:18px;
+    transform:translateX(calc(100% + 12px));
+  }
+
+  .parts-drawer.open{
+    transform:translateX(0);
+  }
+
   .detail-modal{
     left:8px;
-    right:8px;
+    right:54px;
     top:auto;
     bottom:calc(74px + env(safe-area-inset-bottom));
     width:auto;
@@ -277,12 +403,27 @@ button.active{background:var(--green)}
   }
 }
 </style>
+
+<script>
+window.addEventListener("DOMContentLoaded",()=>{
+  window.__rpvLoadTimer = setTimeout(()=>{
+    const loading = document.getElementById("loading");
+    if(loading && loading.style.display!=="none"){
+      loading.classList.add("error");
+      loading.innerHTML =
+        "เว็บโหลดค้างนานเกินไป<br>"+
+        "ให้รีเฟรชหน้าเว็บหนึ่งครั้ง หรือเช็กอินเทอร์เน็ต/CDN";
+    }
+  },15000);
+});
+</script>
+
 </head>
 
 <body>
 <div class="header">
   <b>RPV Filter Housing</b>
-  <small>คลิกชิ้นส่วนเพื่อซูมใกล้ขึ้น • Exploded View เรียงทุกชิ้นเป็นแถวตรงและวางบนพื้น ไม่ลอย</small>
+  <small>มีมุม หน้า ข้าง หลัง บน ล่าง + Exploded View และแทบลูกศรด้านขวาสำหรับดูส่วนประกอบทั้งหมด</small>
 </div>
 
 <div id="status" class="status">กำลังแยกชิ้นงาน...</div>
@@ -296,6 +437,7 @@ button.active{background:var(--green)}
   <div class="tip">ซูมเสร็จแล้วลากเมาส์หมุนดูได้ และกดชิ้นเดิมซ้ำเพื่อกลับมุมรวม</div>
 </div>
 
+
 <div class="controls">
   <button onclick="viewFront()">หน้า</button>
   <button onclick="viewSide()">ข้าง</button>
@@ -303,12 +445,23 @@ button.active{background:var(--green)}
   <button onclick="viewTop()">บน</button>
   <button onclick="viewBottom()">ล่าง</button>
   <button id="explodeBtn" onclick="toggleExplode()">Exploded View</button>
-  <button id="autoBtn" class="active" onclick="toggleAuto()">หมุนอัตโนมัติ</button>
-  <button onclick="clearSelection()">ล้างการเลือก</button>
   <button onclick="resetAll()">รีเซ็ต</button>
 </div>
 
-<div class="hint">มุมปกติเข้าใกล้อีก เห็นตอนประกอบชัดขึ้น • Exploded View ทุกชิ้นวางบนพื้น</div>
+<button id="partsToggle" class="parts-toggle" onclick="togglePartsDrawer()" aria-label="เปิดรายการชิ้นส่วน">◀</button>
+
+<aside id="partsDrawer" class="parts-drawer" aria-label="รายการชิ้นส่วน">
+  <div class="parts-drawer-header">
+    <div>
+      <b>ส่วนประกอบเครื่อง</b>
+      <small>แตะชื่อชิ้นส่วนเพื่อดูรายละเอียด</small>
+    </div>
+  </div>
+  <div id="partsList" class="parts-list"></div>
+</aside>
+
+<div class="hint">
+กดลูกศรด้านขวาเพื่อเปิดรายการชิ้นส่วนทั้งบนคอมและมือถือ</div>
 
 <div id="loading" class="loading">
   <div class="spinner"></div>
@@ -476,6 +629,7 @@ scene.add(activeLabel);
 let extractionAnimation = null;
 let cameraAnimation = null;
 let statusTimer = null;
+let partsDrawerOpen = false;
 
 function easeInOutCubic(t){
   return t < .5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
@@ -504,6 +658,54 @@ window.closeDetail = ()=>{
 
 function hideDetail(){
   document.getElementById("detailModal").classList.remove("show");
+}
+
+window.togglePartsDrawer = ()=>{
+  partsDrawerOpen = !partsDrawerOpen;
+  const drawer = document.getElementById("partsDrawer");
+  const toggle = document.getElementById("partsToggle");
+  drawer.classList.toggle("open", partsDrawerOpen);
+  toggle.textContent = partsDrawerOpen ? "▶" : "◀";
+};
+
+function buildPartsDrawer(){
+  const list = document.getElementById("partsList");
+  if(!list) return;
+
+  list.innerHTML = "";
+
+  [...records]
+    .sort((a,b)=>a.def.no-b.def.no)
+    .forEach(record=>{
+      const item = document.createElement("button");
+      item.className = "parts-item";
+      item.dataset.key = record.def.key;
+      item.innerHTML = `
+        <span class="parts-item-no">${record.def.no}</span>
+        <span class="parts-item-text">
+          <b>${record.def.title}</b>
+          <small>${record.def.material}</small>
+        </span>
+      `;
+      item.addEventListener("click",()=>selectRecord(record));
+      list.appendChild(item);
+    });
+
+  syncPartsDrawerSelection(selectedRecord);
+}
+
+function syncPartsDrawerSelection(record){
+  document.querySelectorAll(".parts-item").forEach(el=>{
+    el.classList.remove("active");
+  });
+
+  if(!record) return;
+
+  const active = document.querySelector(`.parts-item[data-key="${record.def.key}"]`);
+  if(active){
+    active.classList.add("active");
+    active.scrollIntoView({block:"nearest", behavior:"smooth"});
+  }
 }
 
 function cloneMaterials(mesh){
@@ -858,7 +1060,8 @@ function selectRecord(record){
   selectedRecord = record;
   restoreNormalFloor();
   autoRotate = false;
-  document.getElementById("autoBtn").classList.remove("active");
+  const autoBtn = document.getElementById("autoBtn");
+  if(autoBtn) autoBtn.classList.remove("active");
 
   records.forEach(item=>{
     if(item!==record){
@@ -870,6 +1073,7 @@ function selectRecord(record){
 
   computeRightTarget(record);
   highlightRecord(record);
+  syncPartsDrawerSelection(record);
   showDetail(record.def);
   beginExtraction(record);
 }
@@ -882,6 +1086,7 @@ function clearCurrentSelection(restoreCamera=true){
 
   restoreMaterials();
   hideDetail();
+  syncPartsDrawerSelection(null);
   activeLabel.visible = false;
   labelElement.style.display = "none";
 
@@ -943,15 +1148,19 @@ renderer.domElement.addEventListener("pointerup",event=>{
 
 const loader = new GLTFLoader();
 
+const modelUrl = new URL("./filter.glb?v=2", import.meta.url).href;
+
 loader.load(
-  "./filter.glb",
+  modelUrl,
   gltf=>{
     model = gltf.scene;
     root.add(model);
 
     createLogicalGroups();
     centerAndFit();
+    buildPartsDrawer();
 
+    clearTimeout(window.__rpvLoadTimer);
     document.getElementById("loading").style.display = "none";
   },
   xhr=>{
@@ -967,8 +1176,8 @@ loader.load(
     loading.classList.add("error");
     loading.innerHTML =
       "โหลด filter.glb ไม่สำเร็จ<br>"+
-      "วาง HTML และ filter.glb ไว้ในโฟลเดอร์เดียวกัน<br>"+
-      "แล้วเปิดด้วย Live Server";
+      "ตรวจว่า index.html และ filter.glb อยู่ในโฟลเดอร์เดียวกัน<br>"+
+      `<small style="display:block;margin-top:8px;word-break:break-all">${modelUrl}</small>`;
     console.error(error);
   }
 );
@@ -1119,11 +1328,12 @@ function focusBottomAfterLift(){
 
 function setView(position,target=new THREE.Vector3(0,modelSize*.18,0),fov=31){
   autoRotate = false;
-  document.getElementById("autoBtn").classList.remove("active");
+  const autoBtn = document.getElementById("autoBtn");
+  if(autoBtn) autoBtn.classList.remove("active");
 
   bottomViewActive = false;
   floor.visible = true;
-  animateRootLift(0,360);
+  animateModelLift(groundedModelY,360);
   animateCameraTo(position,target,fov);
 }
 
@@ -1155,7 +1365,8 @@ window.viewBottom = ()=>{
   if(!model) return;
 
   autoRotate = false;
-  document.getElementById("autoBtn").classList.remove("active");
+  const autoBtn = document.getElementById("autoBtn");
+  if(autoBtn) autoBtn.classList.remove("active");
 
   bottomViewActive = true;
   extractionAnimation = null;
@@ -1182,6 +1393,7 @@ window.toggleExplode = ()=>{
 
   restoreMaterials();
   hideDetail();
+  syncPartsDrawerSelection(null);
   activeLabel.visible = false;
   labelElement.style.display = "none";
 
@@ -1189,7 +1401,8 @@ window.toggleExplode = ()=>{
   root.rotation.set(0,0,0);
 
   document.getElementById("explodeBtn").classList.toggle("active",exploded);
-  document.getElementById("autoBtn").classList.remove("active");
+  const autoBtn = document.getElementById("autoBtn");
+  if(autoBtn) autoBtn.classList.remove("active");
 
   if(exploded){
     showStatus("กำลังจัดเรียง Exploded View...");
@@ -1217,7 +1430,8 @@ window.toggleExplode = ()=>{
 
 window.toggleAuto = ()=>{
   autoRotate = !autoRotate;
-  document.getElementById("autoBtn").classList.toggle("active",autoRotate);
+  const autoBtn = document.getElementById("autoBtn");
+  if(autoBtn) autoBtn.classList.toggle("active",autoRotate);
 };
 
 window.clearSelection = ()=>{
@@ -1234,7 +1448,8 @@ window.resetAll = ()=>{
   exploded = false;
   autoRotate = true;
   document.getElementById("explodeBtn").classList.remove("active");
-  document.getElementById("autoBtn").classList.add("active");
+  const autoBtn = document.getElementById("autoBtn");
+  if(autoBtn) autoBtn.classList.add("active");
 
   records.forEach(record=>{
     record.group.position.copy(record.originalPosition);
