@@ -332,6 +332,7 @@
 
   function renderComparison() {
     const rows = document.getElementById('comparisonRows');
+    if (!rows) return;
     rows.innerHTML = state.products.map((product) => `
       <tr>
         <td>${escapeHtml(product.category)}</td>
@@ -345,6 +346,7 @@
 
   function renderFaq() {
     const host = document.getElementById('faqList');
+    if (!host) return;
     host.innerHTML = faqs.map(([question, answer], index) => `
       <details class="faq-item" ${index === 0 ? 'open' : ''}>
         <summary>${escapeHtml(question)}</summary>
@@ -530,9 +532,6 @@
         ` : ''}
       </article>
     `;
-    requestAnimationFrame(() => {
-      detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
   }
 
   function setupEvents() {
