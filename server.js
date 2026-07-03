@@ -18,9 +18,58 @@ const SITEMAP_URLS = [
   '/gallery.html',
   '/contact.html'
 ];
+const productsFile = path.join(__dirname, 'database', 'products.json');
+const seedProducts = [
+  {
+    id: 1,
+    name: 'Glass Beads No.12',
+    price: 850,
+    subtitle: '45-90 µm',
+    description: 'เม็ดแก้วพ่นทรายสำหรับงานพ่นละเอียด งานลบคม และงานทำผิว Satin',
+    category: 'Glass Beads',
+    image: ''
+  },
+  {
+    id: 2,
+    name: 'Steel Shot',
+    price: 1200,
+    subtitle: '250-1200 µm',
+    description: 'เม็ดเหล็กกลมสำหรับงาน shot blasting และเตรียมผิวโลหะ',
+    category: 'Steel Shot',
+    image: ''
+  },
+  {
+    id: 3,
+    name: 'Steel Grit',
+    price: 1300,
+    subtitle: '250-1400 µm',
+    description: 'เม็ดเหล็กทรงเหลี่ยมสำหรับสร้าง profile และทำผิวหยาบ',
+    category: 'Steel Grit',
+    image: ''
+  },
+  {
+    id: 4,
+    name: 'Carbon Steel Cut Wire',
+    price: 1450,
+    subtitle: '300-1800 µm',
+    description: 'เม็ดลวดตัดสำหรับงาน shot peening และงานลบคม',
+    category: 'Cut Wire',
+    image: ''
+  },
+  {
+    id: 5,
+    name: 'Ceramic Media',
+    price: 1650,
+    subtitle: '1000-10000 µm',
+    description: 'วัสดุขัดเซรามิกสำหรับเครื่อง vibratory finishing',
+    category: 'Ceramic Media',
+    image: ''
+  }
+];
 
 const uploadDir = path.join(__dirname, 'uploads');
 fs.mkdirSync(uploadDir, { recursive: true });
+fs.mkdirSync(path.dirname(productsFile), { recursive: true });
 const storage = multer.diskStorage({
   destination: uploadDir,
   filename: (req, file, cb) => {
@@ -30,6 +79,92 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+let useDatabase = false;
+
+async function ensureFileStore() {
+  try {
+    await fs.promises.access(productsFile, fs.constants.F_OK);
+  } catch {
+    await fs.promises.writeFile(productsFile, JSON.stringify(seedProducts, null, 2), 'utf8');
+  }
+}
+
+async function readFileProducts() {
+  await ensureFileStore();
+  const raw = await fs.promises.readFile(productsFile, 'utf8');
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return [...seedProducts];
+  }
+}
+
+async function writeFileProducts(products) {
+  await fs.promises.writeFile(productsFile, JSON.stringify(products, null, 2), 'utf8');
+}
+
+function normalizeFileProduct(product) {
+  return {
+    ...product,
+    price: Number(product.price || 0)
+  };
+}
+
+async function listProducts() {
+  if (useDatabase) {
+    return Product.findAll({ order: [['id', 'ASC']] });
+  }
+  const products = await readFileProducts();
+  return products.map(normalizeFileProduct);
+}
+
+async function createProduct(data) {
+  if (useDatabase) {
+    return Product.create(data);
+  }
+  const products = await readFileProducts();
+  const nextId = products.length ? Math.max(...products.map((item) => Number(item.id) || 0)) + 1 : 1;
+  const product = { id: nextId, ...data, price: Number(data.price || 0) };
+  products.push(product);
+  await writeFileProducts(products);
+  return product;
+}
+
+async function updateProductById(id, data) {
+  if (useDatabase) {
+    const product = await Product.findByPk(id);
+    if (!product) return null;
+    await product.update(data);
+    return product;
+  }
+
+  const products = await readFileProducts();
+  const index = products.findIndex((item) => Number(item.id) === Number(id));
+  if (index === -1) return null;
+  products[index] = { ...products[index], ...data, id: products[index].id, price: Number(data.price ?? products[index].price ?? 0) };
+  await writeFileProducts(products);
+  return products[index];
+}
+
+async function deleteProductById(id) {
+  if (useDatabase) {
+    return Product.destroy({ where: { id } });
+  }
+
+  const products = await readFileProducts();
+  const filtered = products.filter((item) => Number(item.id) !== Number(id));
+  const deleted = filtered.length !== products.length;
+  if (deleted) {
+    await writeFileProducts(filtered);
+  }
+  return deleted;
+}
+
+async function seedDatabaseIfEmpty() {
+  const count = await Product.count();
+  if (count > 0) return;
+  await Product.bulkCreate(seedProducts);
+}
 
 function requireAdmin(req, res, next) {
   if (req.session.authenticated) return next();
@@ -77,11 +212,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'product.html'));
+  const file = path.join(__dirname, 'views', 'product.html');
+  res.type('html').send(fs.readFileSync(file, 'utf8'));
 });
 
 app.get('/products/:slug', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'product.html'));
+  const file = path.join(__dirname, 'views', 'product.html');
+  res.type('html').send(fs.readFileSync(file, 'utf8'));
 });
 
 app.get('/api/me', (req, res) => {
@@ -103,7 +240,7 @@ app.post('/api/logout', (req, res) => {
 
 app.get('/api/products', async (req, res) => {
   try {
-    const products = await Product.findAll({ order: [['id', 'ASC']] });
+    const products = await listProducts();
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -112,7 +249,7 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', requireAdmin, upload.single('image'), async (req, res) => {
   try {
-    const product = await Product.create({
+    const product = await createProduct({
       ...req.body,
       image: req.file ? `/uploads/${req.file.filename}` : req.body.image
     });
@@ -124,13 +261,11 @@ app.post('/api/products', requireAdmin, upload.single('image'), async (req, res)
 
 app.put('/api/products/:id', requireAdmin, upload.single('image'), async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id);
-    if (!product) return res.status(404).json({ error: 'Product not found' });
-
-    await product.update({
+    const product = await updateProductById(req.params.id, {
       ...req.body,
-      image: req.file ? `/uploads/${req.file.filename}` : (req.body.image || product.image)
+      image: req.file ? `/uploads/${req.file.filename}` : req.body.image
     });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -139,7 +274,7 @@ app.put('/api/products/:id', requireAdmin, upload.single('image'), async (req, r
 
 app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   try {
-    const deleted = await Product.destroy({ where: { id: req.params.id } });
+    const deleted = await deleteProductById(req.params.id);
     if (!deleted) return res.status(404).json({ error: 'Product not found' });
     res.json({ ok: true });
   } catch (err) {
@@ -150,8 +285,14 @@ app.delete('/api/products/:id', requireAdmin, async (req, res) => {
 app.listen(PORT, async () => {
   try {
     await sequelize.authenticate();
-    console.log(`RPV website running: http://localhost:${PORT}`);
+    await sequelize.sync();
+    await seedDatabaseIfEmpty();
+    useDatabase = true;
+    console.log(`RPV website running with database: http://localhost:${PORT}`);
   } catch (err) {
-    console.error('Database connection failed:', err.message);
+    useDatabase = false;
+    await ensureFileStore();
+    console.warn(`MySQL unavailable, using file store instead: ${err.message}`);
+    console.log(`RPV website running with file store: http://localhost:${PORT}`);
   }
 });

@@ -1,4 +1,7 @@
-const baht = new Intl.NumberFormat('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const baht = new Intl.NumberFormat('th-TH', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+});
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -13,7 +16,9 @@ function productCard(product) {
   const image = product.image
     ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">`
     : '<span>RPV</span>';
-  const description = product.description ? `${escapeHtml(product.description).slice(0, 95)}...` : 'สอบถามรายละเอียดสินค้าและการใช้งานเพิ่มเติมได้';
+  const description = product.description
+    ? `${escapeHtml(product.description).slice(0, 110)}...`
+    : 'สอบถามรายละเอียดสินค้าและการใช้งานเพิ่มเติม';
   const productPath = `/products/${product.slug || `item-${product.id}`}`;
 
   return `
@@ -45,7 +50,7 @@ async function loadHomeProducts() {
     }
 
     target.innerHTML = products.slice(0, 6).map(productCard).join('');
-  } catch (error) {
+  } catch {
     target.innerHTML = '<div class="error-box">โหลดสินค้าไม่ได้ กรุณาตรวจสอบว่า server ทำงานอยู่</div>';
   }
 }

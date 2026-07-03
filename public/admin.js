@@ -1,4 +1,8 @@
-const baht = new Intl.NumberFormat('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const baht = new Intl.NumberFormat('th-TH', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+});
+
 let products = [];
 
 function escapeHtml(value) {
@@ -48,7 +52,7 @@ async function loadProducts() {
         </td>
       </tr>
     `).join('');
-  } catch (error) {
+  } catch {
     rows.innerHTML = '<tr><td colspan="5">โหลดสินค้าไม่ได้</td></tr>';
   }
 }

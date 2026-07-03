@@ -1,13 +1,13 @@
 (() => {
   const glassBeads = [
-    ['Glass Beads No.3', '425–850 µm', 425, 850, 'งานพ่นทำความสะอาดผิว / งานที่ต้องการเม็ดใหญ่', 'glass-beads-no3'],
-    ['Glass Beads No.4', '250–425 µm', 250, 425, 'งานพ่นผิวทั่วไป / ลดคมผิวชิ้นงาน', 'glass-beads-no4'],
-    ['Glass Beads No.6', '180–300 µm', 180, 300, 'งานขัดผิวโลหะ / ทำความสะอาดผิว', 'glass-beads-no6'],
-    ['Glass Beads No.9', '106–212 µm', 106, 212, 'งานพ่นละเอียดระดับกลาง / เตรียมผิวโลหะ', 'glass-beads-no9'],
-    ['Glass Beads No.10', '75–150 µm', 75, 150, 'งานขัดผิวละเอียด / ผิวเนียนสม่ำเสมอ', 'glass-beads-no10'],
-    ['Glass Beads No.12', '45–90 µm', 45, 90, 'งานพ่นละเอียด / ขัดผิว / ทำผิว Satin', 'glass-beads-no12'],
-    ['Glass Beads No.13', '0–45 µm', 0, 45, 'งานละเอียดมาก / งานผิวที่ต้องการแรงกระแทกต่ำ', 'glass-beads-no13'],
-    ['Crush Glass', '125–250 µm', 125, 250, 'งานพ่นทำความสะอาดผิว / เตรียมผิวก่อนเคลือบ', 'crush-glass']
+    ['Glass Beads No.3', '425-850 µm', 425, 850, 'งานพ่นทำความสะอาดผิว / งานที่ต้องการเม็ดใหญ่', 'glass-beads-no3'],
+    ['Glass Beads No.4', '250-425 µm', 250, 425, 'งานพ่นผิวทั่วไป / ลดคมผิวชิ้นงาน', 'glass-beads-no4'],
+    ['Glass Beads No.6', '180-300 µm', 180, 300, 'งานขัดผิวโลหะ / ทำความสะอาดผิว', 'glass-beads-no6'],
+    ['Glass Beads No.9', '106-212 µm', 106, 212, 'งานพ่นละเอียดระดับกลาง / เตรียมผิวโลหะ', 'glass-beads-no9'],
+    ['Glass Beads No.10', '75-150 µm', 75, 150, 'งานขัดผิวละเอียด / ผิวเนียนสม่ำเสมอ', 'glass-beads-no10'],
+    ['Glass Beads No.12', '45-90 µm', 45, 90, 'งานพ่นละเอียด / งานทำผิว Satin', 'glass-beads-no12'],
+    ['Glass Beads No.13', '0-45 µm', 0, 45, 'งานละเอียดมาก / งานผิวต้องการความเรียบสูง', 'glass-beads-no13'],
+    ['Crush Glass', '125-250 µm', 125, 250, 'งานพ่นทำความสะอาดผิว / เตรียมผิวก่อนเคลือบ', 'crush-glass']
   ].map(([name, size, minMicron, maxMicron, application, slug]) => ({
     slug,
     name,
@@ -18,8 +18,10 @@
     maxMicron,
     application,
     applicationTags: slug === 'crush-glass' ? ['surface-prep', 'cleaning'] : ['fine-blasting', 'surface-prep'],
-    recommendedUse: slug === 'glass-beads-no12' ? 'เหมาะกับงานผิว Satin และงานพ่นละเอียด' : 'เลือกตามความละเอียดผิวและแรงกระแทกที่ต้องการ',
-    description: 'เม็ดแก้วพ่นทรายสำหรับงานขัดผิว ลบคม และปรับผิวชิ้นงานให้สม่ำเสมอ เหมาะกับงานที่ต้องการความสะอาดและไม่ต้องการสนิมจากวัสดุเหล็ก',
+    recommendedUse: slug === 'glass-beads-no12'
+      ? 'เหมาะกับงานผิว Satin และงานพ่นละเอียด'
+      : 'เลือกตามความละเอียดของผิวและแรงกระแทกที่ต้องการ',
+    description: 'เม็ดแก้วพ่นทรายสำหรับงานขัดผิว ลบคม และปรับผิวชิ้นงานให้สม่ำเสมอ',
     imageTone: 'glass'
   }));
 
@@ -36,7 +38,7 @@
       application: 'งานทำความสะอาดผิวเหล็ก / shot blasting',
       applicationTags: ['surface-prep', 'cleaning'],
       recommendedUse: 'เหมาะกับชิ้นงานเหล็กที่ต้องการแรงกระแทกสูง',
-      description: 'เม็ดเหล็กทรงกลมสำหรับงานยิงผิว ทำความสะอาดสนิม สเกล และเตรียมผิวก่อนพ่นสีหรือเคลือบผิว',
+      description: 'เม็ดเหล็กกลมสำหรับงานยิงผิว ทำความสะอาดสนิม สเกล และเตรียมผิวก่อนเคลือบ',
       imageTone: 'steel'
     },
     {
@@ -49,8 +51,8 @@
       maxMicron: 1400,
       application: 'งานเตรียมผิวโลหะที่ต้องการ profile',
       applicationTags: ['surface-prep', 'cleaning'],
-      recommendedUse: 'เหมาะกับงานที่ต้องการผิวหยาบเพื่อเพิ่มการยึดเกาะ',
-      description: 'เม็ดเหล็กทรงเหลี่ยมสำหรับสร้าง profile บนผิวโลหะก่อนงานเคลือบ งานพ่นสี หรืองานเตรียมผิวหนัก',
+      recommendedUse: 'เหมาะกับงานที่ต้องการผิวหยาบเพื่อยึดเกาะ',
+      description: 'เม็ดเหล็กทรงเหลี่ยมสำหรับสร้าง profile บนผิวโลหะและงานเตรียมผิวหนัก',
       imageTone: 'grit'
     },
     {
@@ -58,13 +60,13 @@
       name: 'Carbon Steel Cut Wire',
       category: 'Cut Wire',
       size: 'สอบถามตามงาน',
-      micron: 'ขึ้นอยู่กับเส้นผ่านศูนย์กลางลวด',
+      micron: 'ขึ้นอยู่กับเส้นผ่านศูนย์กลาง',
       minMicron: 300,
       maxMicron: 1800,
       application: 'งาน shot peening / cleaning / deburring',
       applicationTags: ['deburring', 'surface-prep', 'cleaning'],
-      recommendedUse: 'เหมาะกับงานที่ต้องการความทนทานและขนาดเม็ดสม่ำเสมอ',
-      description: 'เม็ดลวดตัดคาร์บอนสตีลสำหรับงานขัดผิวและลบคมในอุตสาหกรรม ใช้ได้กับงานที่ต้องการความสม่ำเสมอของ media',
+      recommendedUse: 'เหมาะกับงานที่ต้องการความทนทานและความสม่ำเสมอของเม็ด',
+      description: 'เม็ดลวดตัดสำหรับงานขัดผิว ลบคม และงานอุตสาหกรรมที่ต้องการอายุการใช้งานสูง',
       imageTone: 'wire'
     },
     {
@@ -78,7 +80,7 @@
       application: 'งานลบคม / ขัดผิวในเครื่อง vibratory finishing',
       applicationTags: ['deburring'],
       recommendedUse: 'เหมาะกับงานลบคมและขัดผิวชิ้นงานจำนวนมาก',
-      description: 'วัสดุขัดเซรามิกสำหรับเครื่องขัดเขย่าและเครื่องขัดผิว ใช้กับงานลบคมและปรับผิวชิ้นงานโลหะ',
+      description: 'วัสดุขัดเซรามิกสำหรับเครื่องขัดเขย่าและงานลบคมโลหะ',
       imageTone: 'ceramic'
     },
     {
@@ -89,20 +91,20 @@
       micron: 'เลือกตามเครื่องและชิ้นงาน',
       minMicron: 1000,
       maxMicron: 10000,
-      application: 'งานลบคมชิ้นงานที่ไม่ต้องการแรงขัดสูง',
+      application: 'งานลบคมชิ้นงานที่ไม่ต้องการแรงกระแทกสูง',
       applicationTags: ['deburring'],
       recommendedUse: 'เหมาะกับชิ้นงานที่ต้องการลดรอยและควบคุมแรงขัด',
-      description: 'วัสดุขัดพลาสติกสำหรับงานลบคมและปรับผิวที่ต้องการแรงขัดนุ่มกว่า ceramic media',
+      description: 'วัสดุขัดพลาสติกสำหรับงานลบคมและปรับผิวที่ต้องการความนุ่มกว่า ceramic media',
       imageTone: 'plastic'
     }
   ];
 
   const faqs = [
-    ['Glass Beads ใช้ทำอะไร?', 'Glass Beads ใช้สำหรับงานพ่นละเอียด ขัดผิว ลบคมเบา ๆ และทำผิว Satin บนโลหะหรือชิ้นงานที่ต้องการผิวสม่ำเสมอ'],
-    ['เลือกขนาด micron ยังไง?', 'ถ้าต้องการผิวละเอียดให้เลือก micron เล็ก เช่น 45–90 µm แต่ถ้าต้องการแรงกระแทกมากขึ้นหรือทำความสะอาดผิวเร็วขึ้นให้เลือกขนาดใหญ่ขึ้น'],
-    ['Glass Beads No.12 เหมาะกับงานอะไร?', 'Glass Beads No.12 ขนาด 45–90 micron เหมาะกับงานพ่นละเอียด งานขัดผิว และงานทำผิว Satin'],
-    ['Steel Shot กับ Glass Beads ต่างกันยังไง?', 'Steel Shot มีแรงกระแทกสูง เหมาะกับผิวเหล็กและงานทำความสะอาดหนัก ส่วน Glass Beads ให้ผิวละเอียดกว่าและไม่สร้างสนิมจากตัว media'],
-    ['ต้องเลือก Abrasive Media แบบไหนให้เหมาะกับงาน?', 'ควรดูวัสดุชิ้นงาน ความละเอียดผิวที่ต้องการ เครื่องจักรที่ใช้ และเป้าหมายงาน เช่น ทำความสะอาด ลบคม หรือเตรียมผิวก่อนเคลือบ']
+    ['Glass Beads ใช้ทำอะไร?', 'ใช้สำหรับงานพ่นละเอียด ขัดผิว ลบคมเบา ๆ และทำผิว Satin บนโลหะหรือชิ้นงานที่ต้องการความเรียบสม่ำเสมอ'],
+    ['ควรเลือกขนาด micron ยังไง?', 'ถ้าต้องการผิวละเอียดให้เลือกขนาดเล็กลง ถ้าต้องการแรงกระแทกหรือทำความสะอาดผิวมากขึ้นให้เลือกขนาดใหญ่ขึ้น'],
+    ['Glass Beads No.12 เหมาะกับอะไร?', 'ขนาด 45-90 micron เหมาะกับงานพ่นละเอียด งานลบคม และงานทำผิว Satin'],
+    ['Steel Shot ต่างจาก Glass Beads ยังไง?', 'Steel Shot มีแรงกระแทกสูงกว่า เหมาะกับผิวเหล็ก ส่วน Glass Beads ให้ผิวละเอียดและไม่รุนแรงเท่า'],
+    ['ควรเลือก abrasive media แบบไหน?', 'ดูชนิดวัสดุชิ้นงาน ความละเอียดที่ต้องการ เครื่องที่ใช้ และเป้าหมายของงาน เช่น พ่นทราย ลบคม หรือทำผิวเรียบ']
   ];
 
   const state = {
@@ -185,7 +187,7 @@
           <h3><a href="${productUrl(product)}">${escapeHtml(product.name)}</a></h3>
           <dl class="product-facts">
             <div><dt>ขนาด</dt><dd>${escapeHtml(product.size)}</dd></div>
-            <div><dt>เหมาะสำหรับ</dt><dd>${escapeHtml(product.application)}</dd></div>
+            <div><dt>การใช้งาน</dt><dd>${escapeHtml(product.application)}</dd></div>
             <div><dt>ประเภท</dt><dd>${escapeHtml(product.category)}</dd></div>
           </dl>
           <div class="product-card-actions">
@@ -234,12 +236,12 @@
   function categoryDescription(category) {
     const descriptions = {
       'Glass Beads': 'เม็ดแก้วพ่นทรายสำหรับงานพ่นละเอียด ขัดผิว และทำผิว Satin',
-      'Crush Glass': 'วัสดุพ่นจากแก้วบดสำหรับงานทำความสะอาดและเตรียมผิว',
-      'Steel Shot': 'เม็ดเหล็กทรงกลมสำหรับงาน shot blasting และทำความสะอาดผิวเหล็ก',
+      'Crush Glass': 'วัสดุพ่นจากแก้วบดสำหรับงานทำความสะอาดผิวและเตรียมผิว',
+      'Steel Shot': 'เม็ดเหล็กกลมสำหรับงาน shot blasting และทำความสะอาดผิวเหล็ก',
       'Steel Grit': 'เม็ดเหล็กทรงเหลี่ยมสำหรับสร้าง profile และเตรียมผิวก่อนเคลือบ',
-      'Cut Wire': 'เม็ดลวดตัดสำหรับงาน shot peening ทำความสะอาด และลบคม',
+      'Cut Wire': 'เม็ดลวดตัดสำหรับงาน shot peening และงานลบคม',
       'Ceramic Media': 'วัสดุขัดเซรามิกสำหรับเครื่องขัดเขย่าและงานลบคม',
-      'Plastic Media': 'วัสดุขัดพลาสติกสำหรับงานลบคมที่ต้องการแรงขัดนุ่ม'
+      'Plastic Media': 'วัสดุขัดพลาสติกสำหรับงานลบคมที่ต้องการความนุ่มกว่า ceramic media'
     };
     return descriptions[category] || 'Abrasive media สำหรับงานอุตสาหกรรม';
   }
@@ -315,7 +317,7 @@
           '@type': 'CollectionPage',
           name: 'RPV Abrasive Media Products',
           url: location.origin + '/products',
-          description: 'สินค้า abrasive media วัสดุพ่นทราย Glass Beads Steel Shot Steel Grit Cut Wire Ceramic Media และ Plastic Media'
+          description: 'สินค้า abrasive media ของ RPV Industrial Supply'
         },
         ...graph
       ]
@@ -358,23 +360,25 @@
   function normalizeDbProduct(item) {
     const name = item.name || 'Abrasive Media';
     const category = item.category || 'Other Abrasive Media';
-    const slug = String(name).toLowerCase()
+    const slug = String(name)
+      .toLowerCase()
       .replace(/no\./g, 'no')
       .replace(/[^a-z0-9ก-๙]+/gi, '-')
       .replace(/(^-|-$)/g, '');
+
     return {
       slug,
       id: item.id,
       name,
       category,
       size: item.subtitle || 'สอบถามขนาดเพิ่มเติม',
-      micron: item.subtitle || 'สอบถามเพิ่มเติม',
+      micron: item.subtitle || 'สอบถามขนาดเพิ่มเติม',
       minMicron: 0,
       maxMicron: 10000,
-      application: item.applications ? String(item.applications).split('\n')[0] : 'สอบถามการใช้งานที่เหมาะสม',
+      application: item.applications ? String(item.applications).split('\n')[0] : 'สอบถามการใช้งานเพิ่มเติม',
       applicationTags: ['surface-prep'],
       recommendedUse: item.description || 'สอบถามทีม RPV เพื่อเลือกสินค้าให้เหมาะกับงาน',
-      description: item.description || 'สินค้าอุตสาหกรรมสำหรับงานขัดผิว พ่นทราย ลบคม หรือเตรียมผิว',
+      description: item.description || 'สินค้าอุตสาหกรรมสำหรับงานขัดผิวและเตรียมผิว',
       image: item.image,
       imageTone: 'glass'
     };
@@ -430,8 +434,10 @@
 
   function setupEvents() {
     ['searchInput', 'categoryFilter', 'sizeFilter', 'applicationFilter'].forEach((id) => {
-      document.getElementById(id).addEventListener('input', applyFilters);
-      document.getElementById(id).addEventListener('change', applyFilters);
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', applyFilters);
+      el.addEventListener('change', applyFilters);
     });
   }
 

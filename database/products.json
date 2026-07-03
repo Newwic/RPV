@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Glass Beads No.12",
+    "price": 850,
+    "subtitle": "45-90 µm",
+    "description": "เม็ดแก้วพ่นทรายสำหรับงานพ่นละเอียด งานลบคม และงานทำผิว Satin",
+    "category": "Glass Beads",
+    "image": ""
+  },
+  {
+    "id": 2,
+    "name": "Steel Shot",
+    "price": 1200,
+    "subtitle": "250-1200 µm",
+    "description": "เม็ดเหล็กกลมสำหรับงาน shot blasting และเตรียมผิวโลหะ",
+    "category": "Steel Shot",
+    "image": ""
+  },
+  {
+    "id": 3,
+    "name": "Steel Grit",
+    "price": 1300,
+    "subtitle": "250-1400 µm",
+    "description": "เม็ดเหล็กทรงเหลี่ยมสำหรับสร้าง profile และทำผิวหยาบ",
+    "category": "Steel Grit",
+    "image": ""
+  },
+  {
+    "id": 4,
+    "name": "Carbon Steel Cut Wire",
+    "price": 1450,
+    "subtitle": "300-1800 µm",
+    "description": "เม็ดลวดตัดสำหรับงาน shot peening และงานลบคม",
+    "category": "Cut Wire",
+    "image": ""
+  },
+  {
+    "id": 5,
+    "name": "Ceramic Media",
+    "price": 1650,
+    "subtitle": "1000-10000 µm",
+    "description": "วัสดุขัดเซรามิกสำหรับเครื่อง vibratory finishing",
+    "category": "Ceramic Media",
+    "image": ""
+  }
+]

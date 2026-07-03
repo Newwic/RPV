@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       window.location.href = 'admin.html';
-    } catch (err) {
+    } catch {
       error.textContent = 'เชื่อมต่อ server ไม่ได้';
     }
   });
