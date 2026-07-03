@@ -1,0 +1,9 @@
+node_modules/
+uploads/
+*.log
+*.zip
+.env
+.env.*
+rpv_msds_outputs/
+rpv_msds_previews/
+*.tmp

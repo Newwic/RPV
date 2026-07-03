@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Dashboard | RPV Industrial Supply</title>
+  <meta name="description" content="หน้าจัดการสินค้า RPV Industrial Supply">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="top-strip">
+      <div class="top-strip-inner">Admin Dashboard | จัดการสินค้าและข้อมูลเว็บ</div>
+    </div>
+    <div class="brand-row">
+      <a class="brand-logo" href="/">RPV</a>
+      <div class="brand-contact">
+        RPV INDUSTRIAL SUPPLY CO., LTD.<br>
+        หน้าจัดการสินค้า รูปภาพ รายละเอียด และข้อมูลการขาย
+      </div>
+    </div>
+    <div class="navbar">
+      <button class="menu-toggle" type="button" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/">HOME</a>
+        <a href="/products">PRODUCTS</a>
+        <a class="active" href="/admin.html">ADMIN</a>
+        <a href="#" id="logoutBtn">LOGOUT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="section-inner">
+        <div class="page-title">
+          <h1>Admin Dashboard</h1>
+          <p class="lead">เพิ่ม แก้ไข และลบสินค้าได้จากหน้าเดียว พร้อมตารางรายการสินค้าและฟอร์มจัดการข้อมูลครบถ้วน</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner">
+        <div class="notice" id="adminNotice">กำลังตรวจสอบสิทธิ์...</div>
+
+        <div class="stats-grid" style="margin-top:18px">
+          <div class="stat-card"><strong>Products</strong><span>จัดการข้อมูลสินค้า</span></div>
+          <div class="stat-card"><strong>Media</strong><span>อัปโหลดรูปภาพสินค้า</span></div>
+          <div class="stat-card"><strong>Admin</strong><span>สิทธิ์หลังบ้าน</span></div>
+        </div>
+
+        <div class="admin-layout" id="adminApp" hidden style="margin-top:18px">
+          <form class="panel form-grid" id="productForm" enctype="multipart/form-data">
+            <h2 id="formTitle" style="margin:0;color:var(--green-deep)">เพิ่มสินค้า</h2>
+            <input type="hidden" id="editId">
+
+            <div class="grid-2">
+              <div class="form-row">
+                <label for="name">ชื่อสินค้า</label>
+                <input class="input" id="name" name="name" required>
+              </div>
+              <div class="form-row">
+                <label for="subtitle">คำโปรย</label>
+                <input class="input" id="subtitle" name="subtitle">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-row">
+                <label for="price">ราคา</label>
+                <input class="input" id="price" name="price" type="number" step="0.01" required>
+              </div>
+              <div class="form-row">
+                <label for="category">หมวดหมู่</label>
+                <input class="input" id="category" name="category" placeholder="เช่น Glass Beads">
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="description">รายละเอียด</label>
+              <textarea class="textarea" id="description" name="description"></textarea>
+            </div>
+            <div class="form-row">
+              <label for="features">คุณสมบัติเด่น</label>
+              <textarea class="textarea" id="features" name="features"></textarea>
+            </div>
+            <div class="form-row">
+              <label for="applications">การใช้งาน</label>
+              <textarea class="textarea" id="applications" name="applications"></textarea>
+            </div>
+            <div class="grid-2">
+              <div class="form-row">
+                <label for="technicalSpecs">ข้อมูลทางเทคนิค</label>
+                <textarea class="textarea" id="technicalSpecs" name="technicalSpecs"></textarea>
+              </div>
+              <div class="form-row">
+                <label for="codeSizes">รหัสสินค้า / ขนาด</label>
+                <textarea class="textarea" id="codeSizes" name="codeSizes"></textarea>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-row">
+                <label for="packaging">บรรจุภัณฑ์</label>
+                <textarea class="textarea" id="packaging" name="packaging"></textarea>
+              </div>
+              <div class="form-row">
+                <label for="pdfLink">ลิงก์ PDF</label>
+                <input class="input" id="pdfLink" name="pdfLink">
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="image">รูปสินค้า</label>
+              <input class="input" id="image" name="image" type="file" accept="image/*">
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">บันทึกสินค้า</button>
+              <button class="btn btn-outline" id="resetBtn" type="button">ล้างฟอร์ม</button>
+            </div>
+          </form>
+
+          <section class="panel">
+            <div class="toolbar">
+              <h2 style="margin:0;color:var(--green-deep)">รายการสินค้า</h2>
+              <button class="btn btn-outline" id="reloadBtn" type="button">โหลดใหม่</button>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>รูป</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>ราคา</th>
+                    <th>หมวดหมู่</th>
+                    <th>จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="productRows">
+                  <tr><td colspan="5">กำลังโหลด...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/admin.js"></script>
+  <script src="/nav.js"></script>
+</body>
+</html>

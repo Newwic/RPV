@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rpv-industrial-supply.onrender.com/sitemap.xml
