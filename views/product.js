@@ -28,6 +28,36 @@
   const baseProducts = [
     ...glassBeads,
     {
+      slug: 'portable-und-blaster',
+      name: 'Portable Under Blaster',
+      category: 'Portable Sand Blaster',
+      size: '1 เครื่อง / ระบบพ่นทรายกลางแจ้ง',
+      micron: 'ใช้กับ abrasive media หลายขนาด',
+      minMicron: 0,
+      maxMicron: 10000,
+      application: 'งานพ่นทรายหน้างาน / งานโครงสร้างเหล็ก / งานซ่อมบำรุง',
+      applicationTags: ['surface-prep', 'cleaning'],
+      recommendedUse: 'เหมาะกับงานที่ต้องการเคลื่อนย้ายเครื่องไปใช้นอกโรงงาน',
+      description: 'เครื่องพ่นทรายแบบพกพาสำหรับงานภาคสนาม สามารถต่อใช้งานกับวัสดุพ่นทรายได้หลากหลายและเหมาะกับงานเตรียมผิวเหล็กขนาดใหญ่',
+      features: [
+        'โครงสร้างเคลื่อนย้ายง่าย',
+        'ใช้งานได้กับงานพ่นทรายหน้างาน',
+        'รองรับงานเตรียมผิวและทำความสะอาดสนิม',
+        'ปรับใช้งานร่วมกับ abrasive media หลายประเภท'
+      ].join('\n'),
+      technicalSpecs: [
+        'ชนิดเครื่อง: Portable Sand Blaster',
+        'การใช้งาน: งานภาคสนาม / งานซ่อมบำรุง',
+        'วัสดุที่รองรับ: Glass Beads, Steel Shot, Steel Grit',
+        'การจ่ายลม: ตามสเปกเครื่องลูกค้า',
+        'การบำรุงรักษา: ทำความสะอาดถังและชุดสายพ่นหลังใช้งานทุกครั้ง'
+      ].join('\n'),
+      codeSizes: 'Portable Unit / Custom Setup',
+      packaging: 'จัดส่งเป็นเครื่องพร้อมชุดอุปกรณ์',
+      pdfLink: '/contact.html?topic=portable-sand-blaster',
+      imageTone: 'portable'
+    },
+    {
       slug: 'steel-shot',
       name: 'Steel Shot',
       category: 'Steel Shot',
@@ -136,10 +166,37 @@
       grit: ['#e6e0d8', '#525252', '#ffffff'],
       wire: ['#e8edf0', '#7d8b8f', '#ffffff'],
       ceramic: ['#f2efe8', '#c1b58d', '#ffffff'],
-      plastic: ['#eaf5e8', '#82b880', '#ffffff']
+      plastic: ['#eaf5e8', '#82b880', '#ffffff'],
+      portable: ['#f3f2f0', '#2f3d46', '#ffffff']
     };
     const [bg, bead, shine] = palettes[product.imageTone] || palettes.glass;
     const label = escapeHtml(product.category || 'RPV');
+
+    if (product.imageTone === 'portable') {
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img">
+          <rect width="640" height="420" fill="${bg}"/>
+          <ellipse cx="320" cy="350" rx="240" ry="34" fill="rgba(0,0,0,.08)"/>
+          <rect x="170" y="110" width="220" height="160" rx="18" fill="${bead}" />
+          <rect x="188" y="130" width="184" height="118" rx="12" fill="#ffffff"/>
+          <circle cx="214" cy="292" r="26" fill="#2f3d46"/>
+          <circle cx="336" cy="292" r="26" fill="#2f3d46"/>
+          <rect x="385" y="150" width="90" height="18" rx="9" fill="#2f3d46"/>
+          <rect x="458" y="132" width="88" height="10" rx="5" fill="#2f3d46" transform="rotate(10 458 132)"/>
+          <path d="M545 132 C585 110, 600 92, 620 82" stroke="#2f3d46" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M208 110 L180 76" stroke="#2f3d46" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <circle cx="208" cy="110" r="16" fill="#d9e6df"/>
+          <rect x="214" y="160" width="148" height="18" rx="9" fill="#d9e6df"/>
+          <rect x="214" y="188" width="120" height="12" rx="6" fill="#d9e6df"/>
+          <circle cx="248" cy="215" r="10" fill="#d9e6df"/>
+          <circle cx="282" cy="215" r="10" fill="#d9e6df"/>
+          <circle cx="316" cy="215" r="10" fill="#d9e6df"/>
+          <rect x="86" y="304" width="468" height="40" rx="10" fill="rgba(255,255,255,.82)"/>
+          <text x="320" y="331" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#123b25">${label}</text>
+        </svg>
+      `)}`;
+    }
+
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img">
         <rect width="640" height="420" fill="${bg}"/>
@@ -237,6 +294,7 @@
     const descriptions = {
       'Glass Beads': 'เม็ดแก้วพ่นทรายสำหรับงานพ่นละเอียด ขัดผิว และทำผิว Satin',
       'Crush Glass': 'วัสดุพ่นจากแก้วบดสำหรับงานทำความสะอาดผิวและเตรียมผิว',
+      'Portable Sand Blaster': 'เครื่องพ่นทรายแบบพกพาสำหรับงานภาคสนามและงานซ่อมบำรุง',
       'Steel Shot': 'เม็ดเหล็กกลมสำหรับงาน shot blasting และทำความสะอาดผิวเหล็ก',
       'Steel Grit': 'เม็ดเหล็กทรงเหลี่ยมสำหรับสร้าง profile และเตรียมผิวก่อนเคลือบ',
       'Cut Wire': 'เม็ดลวดตัดสำหรับงาน shot peening และงานลบคม',
@@ -317,7 +375,7 @@
           '@type': 'CollectionPage',
           name: 'RPV Abrasive Media Products',
           url: location.origin + '/products',
-          description: 'สินค้า abrasive media ของ RPV Industrial Supply'
+          description: 'สินค้า abrasive media และเครื่องพ่นทรายของ RPV Industrial Supply'
         },
         ...graph
       ]
@@ -380,7 +438,12 @@
       recommendedUse: item.description || 'สอบถามทีม RPV เพื่อเลือกสินค้าให้เหมาะกับงาน',
       description: item.description || 'สินค้าอุตสาหกรรมสำหรับงานขัดผิวและเตรียมผิว',
       image: item.image,
-      imageTone: 'glass'
+      imageTone: 'glass',
+      features: item.features || '',
+      technicalSpecs: item.technicalSpecs || '',
+      codeSizes: item.codeSizes || '',
+      packaging: item.packaging || '',
+      pdfLink: item.pdfLink || ''
     };
   }
 
@@ -395,18 +458,46 @@
     }
   }
 
+  function renderList(title, items) {
+    if (!items.length) return '';
+    return `
+      <div class="info-section">
+        <h3>${escapeHtml(title)}</h3>
+        <ul class="feature-list">
+          ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
   function renderDetail(product) {
     document.getElementById('pageH1').textContent = product.name;
     document.title = `${product.name} | RPV Industrial Supply`;
-    document.querySelector('meta[name="description"]').setAttribute('content', `${product.name} ${product.size} สำหรับ ${product.application} ติดต่อ RPV Industrial Supply เพื่อขอใบเสนอราคา`);
+    document.querySelector('meta[name="description"]').setAttribute(
+      'content',
+      `${product.name} ${product.size} สำหรับ ${product.application} ติดต่อ RPV Industrial Supply เพื่อขอใบเสนอราคา`
+    );
     document.getElementById('productFilters').hidden = true;
     document.getElementById('productGroups').hidden = true;
+
+    const featureList = String(product.features || '').split('\n').filter(Boolean);
+    const specList = String(product.technicalSpecs || '').split('\n').filter(Boolean);
+    const optionsList = String(product.codeSizes || '').split('\n').filter(Boolean);
+    const packageText = String(product.packaging || '').trim();
+    const isPortable = product.slug === 'portable-und-blaster';
 
     const detail = document.getElementById('detailView');
     detail.hidden = false;
     detail.innerHTML = `
       <article class="product-detail-page">
         <a class="btn btn-outline" href="/products">กลับไปหน้าสินค้าทั้งหมด</a>
+        ${isPortable ? `
+          <section class="product-hero-mini">
+            <div class="badge">Featured Machine</div>
+            <h2>เครื่องพ่นทรายกลางแจ้งแบบพกพา</h2>
+            <p class="lead">โซลูชันสำหรับงานภาคสนาม งานซ่อมบำรุง และงานเตรียมผิวโครงสร้างเหล็กขนาดใหญ่</p>
+          </section>
+        ` : ''}
         <div class="product-detail-layout">
           <div class="detail-image">${productImage(product)}</div>
           <div class="panel detail-info">
@@ -419,12 +510,24 @@
               <div><dt>การใช้งานหลัก</dt><dd>${escapeHtml(product.application)}</dd></div>
               <div><dt>แนะนำ</dt><dd>${escapeHtml(product.recommendedUse)}</dd></div>
             </dl>
+            ${renderList('จุดเด่น', featureList)}
+            ${renderList('สเปกหลัก', specList)}
+            ${renderList('ขนาด / รุ่น', optionsList)}
+            ${packageText ? `<div class="info-section"><h3>การจัดส่ง</h3><p>${escapeHtml(packageText)}</p></div>` : ''}
             <div class="product-card-actions">
               <a class="btn btn-primary" href="${quoteUrl(product)}">ขอใบเสนอราคา</a>
               <a class="btn btn-outline" href="tel:0863990785">โทร 086-399-0785</a>
+              ${product.pdfLink ? `<a class="btn btn-outline" href="${escapeHtml(product.pdfLink)}">เปิดรายละเอียด</a>` : ''}
             </div>
           </div>
         </div>
+        ${isPortable ? `
+          <section class="product-gallery-strip">
+            <div class="gallery-tile">${productImage({ ...product, imageTone: 'portable' })}</div>
+            <div class="gallery-tile">${productImage({ ...product, imageTone: 'steel' })}</div>
+            <div class="gallery-tile">${productImage({ ...product, imageTone: 'grit' })}</div>
+          </section>
+        ` : ''}
       </article>
     `;
     requestAnimationFrame(() => {

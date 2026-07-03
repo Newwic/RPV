@@ -31,6 +31,20 @@ const seedProducts = [
   },
   {
     id: 2,
+    name: 'Portable Under Blaster',
+    price: 28500,
+    subtitle: '1 เครื่อง / ระบบพ่นทรายกลางแจ้ง',
+    description: 'เครื่องพ่นทรายแบบพกพาสำหรับงานภาคสนาม งานซ่อมบำรุง และงานเตรียมผิวเหล็กขนาดใหญ่',
+    category: 'Portable Sand Blaster',
+    image: '',
+    features: 'โครงสร้างเคลื่อนย้ายง่าย\nใช้งานได้กับงานพ่นทรายหน้างาน\nรองรับงานเตรียมผิวและทำความสะอาดสนิม\nปรับใช้งานร่วมกับ abrasive media หลายประเภท',
+    technicalSpecs: 'ชนิดเครื่อง: Portable Sand Blaster\nการใช้งาน: งานภาคสนาม / งานซ่อมบำรุง\nวัสดุที่รองรับ: Glass Beads, Steel Shot, Steel Grit\nการจ่ายลม: ตามสเปกเครื่องลูกค้า\nการบำรุงรักษา: ทำความสะอาดถังและชุดสายพ่นหลังใช้งานทุกครั้ง',
+    codeSizes: 'Portable Unit / Custom Setup',
+    packaging: 'จัดส่งเป็นเครื่องพร้อมชุดอุปกรณ์',
+    pdfLink: '/contact.html?topic=portable-sand-blaster'
+  },
+  {
+    id: 3,
     name: 'Steel Shot',
     price: 1200,
     subtitle: '250-1200 µm',
@@ -39,7 +53,7 @@ const seedProducts = [
     image: ''
   },
   {
-    id: 3,
+    id: 4,
     name: 'Steel Grit',
     price: 1300,
     subtitle: '250-1400 µm',
@@ -48,7 +62,7 @@ const seedProducts = [
     image: ''
   },
   {
-    id: 4,
+    id: 5,
     name: 'Carbon Steel Cut Wire',
     price: 1450,
     subtitle: '300-1800 µm',
@@ -57,7 +71,7 @@ const seedProducts = [
     image: ''
   },
   {
-    id: 5,
+    id: 6,
     name: 'Ceramic Media',
     price: 1650,
     subtitle: '1000-10000 µm',
@@ -161,9 +175,12 @@ async function deleteProductById(id) {
 }
 
 async function seedDatabaseIfEmpty() {
-  const count = await Product.count();
-  if (count > 0) return;
-  await Product.bulkCreate(seedProducts);
+  const existing = await Product.findAll({ attributes: ['name'] });
+  const existingNames = new Set(existing.map((item) => item.name));
+  const missing = seedProducts.filter((item) => !existingNames.has(item.name));
+  if (missing.length) {
+    await Product.bulkCreate(missing);
+  }
 }
 
 function requireAdmin(req, res, next) {
