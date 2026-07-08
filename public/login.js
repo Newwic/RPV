@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      window.location.href = 'admin.html';
+      window.location.href = '/admin.html';
     } catch {
       error.textContent = 'เชื่อมต่อ server ไม่ได้';
     }

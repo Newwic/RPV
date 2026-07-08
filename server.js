@@ -10,7 +10,7 @@ const Product = require('./database/models/Product');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SITE_URL = (process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || 'https://rpv-industrial-supply.onrender.com').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || 'https://rpv.onrender.com').replace(/\/$/, '');
 const SITEMAP_URLS = [
   '/',
   '/about.html',
@@ -188,6 +188,11 @@ function requireAdmin(req, res, next) {
   return res.status(401).json({ error: 'Please login first' });
 }
 
+function requireAdminPage(req, res, next) {
+  if (req.session.authenticated) return next();
+  return res.redirect('/login.html');
+}
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -221,11 +226,30 @@ ${urls}
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'views')));
 app.use('/uploads', express.static(uploadDir));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+app.get('/about.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'about.html'));
+});
+
+app.get('/gallery.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'gallery.html'));
+});
+
+app.get('/contact.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'contact.html'));
+});
+
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+app.get('/admin.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin.html'));
 });
 
 app.get('/products', (req, res) => {
@@ -236,6 +260,10 @@ app.get('/products', (req, res) => {
 app.get('/products/:slug', (req, res) => {
   const file = path.join(__dirname, 'views', 'product.html');
   res.type('html').send(fs.readFileSync(file, 'utf8'));
+});
+
+app.get('/product.js', (req, res) => {
+  res.type('application/javascript').sendFile(path.join(__dirname, 'views', 'product.js'));
 });
 
 app.get('/api/me', (req, res) => {

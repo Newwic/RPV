@@ -18,7 +18,7 @@ async function checkAuth() {
   const response = await fetch('/api/me');
   const data = response.ok ? await response.json() : { authenticated: false };
   if (!data.authenticated) {
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
     return false;
   }
   document.getElementById('adminNotice').textContent = 'เข้าสู่ระบบแล้ว พร้อมจัดการสินค้า';
@@ -114,7 +114,7 @@ async function saveProduct(event) {
 
 async function logout() {
   await fetch('/api/logout', { method: 'POST' });
-  window.location.href = 'login.html';
+  window.location.href = '/login.html';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
