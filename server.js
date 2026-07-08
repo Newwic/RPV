@@ -15,6 +15,8 @@ const SITEMAP_URLS = [
   '/',
   '/about.html',
   '/products',
+  '/catalog.html',
+  '/3d/filter',
   '/gallery.html',
   '/contact.html'
 ];
@@ -228,6 +230,10 @@ ${urls}
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(uploadDir));
 
+app.get('/models/filter.glb', (req, res) => {
+  res.type('model/gltf-binary').sendFile(path.join(__dirname, 'filter.glb'));
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
@@ -242,6 +248,14 @@ app.get('/gallery.html', (req, res) => {
 
 app.get('/contact.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'contact.html'));
+});
+
+app.get('/catalog.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'catalog.html'));
+});
+
+app.get('/3d/filter', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'viewer.html'));
 });
 
 app.get('/login.html', (req, res) => {

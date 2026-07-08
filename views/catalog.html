@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RPV PDF Catalog | Industrial Supply</title>
+  <meta name="description" content="Catalog สินค้า RPV Industrial Supply พร้อมลิงก์และ QR สำหรับดูโมเดล 3D">
+  <link rel="canonical" href="https://rpv.onrender.com/catalog.html">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="catalog-body">
+  <header class="catalog-toolbar">
+    <a class="brand-logo" href="/">RPV</a>
+    <div class="catalog-toolbar-actions">
+      <a class="btn btn-outline" href="/3d/filter">ดู 3D</a>
+      <button class="btn btn-primary" type="button" onclick="window.print()">บันทึกเป็น PDF</button>
+    </div>
+  </header>
+
+  <main class="catalog-sheet">
+    <section class="catalog-cover">
+      <div>
+        <span class="eyebrow">Industrial abrasive media catalog</span>
+        <h1>RPV Industrial Supply</h1>
+        <p>Catalog สินค้า abrasive media และอุปกรณ์สำหรับงานเตรียมผิว พร้อมลิงก์ดูโมเดล 3D บนเว็บ</p>
+      </div>
+      <div class="catalog-cover-box">
+        <strong>3D Model Ready</strong>
+        <span>สแกน QR หรือกดลิงก์เพื่อหมุนดูโมเดลบนเว็บ</span>
+      </div>
+    </section>
+
+    <section class="catalog-section">
+      <div class="catalog-section-head">
+        <h2>Interactive 3D Product</h2>
+        <a href="/3d/filter">https://rpv.onrender.com/3d/filter</a>
+      </div>
+      <div class="catalog-3d-row">
+        <div class="catalog-product-visual">
+          <img src="/rpv-banner-ref-remote.jpg" alt="RPV product preview">
+        </div>
+        <div class="catalog-product-info">
+          <h3>RPV 3D Product Viewer</h3>
+          <p>ลูกค้าสามารถเปิดดูสินค้าแบบ 3D หมุน ซูม และดูบนมือถือได้ เหมาะสำหรับแนบใน PDF catalog หรือส่งให้ลูกค้าทางไลน์/อีเมล</p>
+          <dl class="catalog-facts">
+            <div><dt>Model</dt><dd>filter.glb</dd></div>
+            <div><dt>Format</dt><dd>Web GLB / mobile ready</dd></div>
+            <div><dt>Link</dt><dd>rpv.onrender.com/3d/filter</dd></div>
+          </dl>
+        </div>
+        <div class="catalog-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Frpv.onrender.com%2F3d%2Ffilter" alt="QR code to RPV 3D viewer">
+          <span>Scan to view 3D</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog-section">
+      <div class="catalog-section-head">
+        <h2>Product List</h2>
+        <span>RPV Industrial Supply</span>
+      </div>
+      <div id="catalogProducts" class="catalog-products">
+        <div class="loading">กำลังโหลดรายการสินค้า...</div>
+      </div>
+    </section>
+
+    <section class="catalog-contact">
+      <h2>Contact</h2>
+      <p>โทร 086-399-0785 | RPV Industrial Supply Co., Ltd.</p>
+      <p>เปิดเว็บ: https://rpv.onrender.com/ | ดูโมเดล 3D: https://rpv.onrender.com/3d/filter</p>
+    </section>
+  </main>
+
+  <script src="/catalog.js"></script>
+</body>
+</html>

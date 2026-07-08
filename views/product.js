@@ -518,6 +518,8 @@
             ${packageText ? `<div class="info-section"><h3>การจัดส่ง</h3><p>${escapeHtml(packageText)}</p></div>` : ''}
             <div class="product-card-actions">
               <a class="btn btn-primary" href="${quoteUrl(product)}">ขอใบเสนอราคา</a>
+              <a class="btn btn-outline" href="/3d/filter">ดูโมเดล 3D</a>
+              <a class="btn btn-outline" href="/catalog.html">PDF Catalog</a>
               <a class="btn btn-outline" href="tel:0863990785">โทร 086-399-0785</a>
               ${product.pdfLink ? `<a class="btn btn-outline" href="${escapeHtml(product.pdfLink)}">เปิดรายละเอียด</a>` : ''}
             </div>
