@@ -228,6 +228,7 @@ ${urls}
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(uploadDir));
 
 app.get('/models/filter.glb', (req, res) => {
@@ -235,19 +236,19 @@ app.get('/models/filter.glb', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  res.type('html').send(fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8'));
 });
 
 app.get('/about.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'about.html'));
+  res.type('html').send(fs.readFileSync(path.resolve(__dirname, 'about.html'), 'utf8'));
 });
 
 app.get('/gallery.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'gallery.html'));
+  res.type('html').send(fs.readFileSync(path.resolve(__dirname, 'gallery.html'), 'utf8'));
 });
 
 app.get('/contact.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'contact.html'));
+  res.type('html').send(fs.readFileSync(path.resolve(__dirname, 'contact.html'), 'utf8'));
 });
 
 app.get('/catalog.html', (req, res) => {
@@ -267,12 +268,12 @@ app.get('/admin.html', requireAdminPage, (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  const file = path.join(__dirname, 'views', 'product.html');
+  const file = path.resolve(__dirname, 'products', 'index.html');
   res.type('html').send(fs.readFileSync(file, 'utf8'));
 });
 
 app.get('/products/:slug', (req, res) => {
-  const file = path.join(__dirname, 'views', 'product.html');
+  const file = path.resolve(__dirname, 'products', 'index.html');
   res.type('html').send(fs.readFileSync(file, 'utf8'));
 });
 
