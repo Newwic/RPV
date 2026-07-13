@@ -18,7 +18,7 @@ function productCard(product) {
     : '<span>RPV</span>';
   const description = product.description
     ? `${escapeHtml(product.description).slice(0, 110)}...`
-    : 'สอบถามรายละเอียดสินค้าและการใช้งานเพิ่มเติม';
+    : 'รายละเอียดสินค้าและวิธีใช้งาน';
   const productPath = `/products/${product.slug || `item-${product.id}`}`;
 
   return `
